@@ -43,11 +43,18 @@ public class DashboardServlet extends HttpServlet {
         );
         // charts
         request.setAttribute("location-names",
-               LocationUtils.getLocationNames(locations)
+                LocationUtils.getLocationNames(locations)
         );
         request.setAttribute("location-visits",
-               LocationUtils.getLocationVisits(locations)
-        );        
+                LocationUtils.getLocationVisits(locations)
+        );
+        request.setAttribute("time-to-stay",
+                LocationUtils.getLocationRandom(locations)
+        );
+
+        request.setAttribute("time-to-travel",
+                LocationUtils.getLocationRandom(locations)
+        );
         // Location-Specific Data
         request.setAttribute("locations",
                 HTMLUtils.toHtml(locations));

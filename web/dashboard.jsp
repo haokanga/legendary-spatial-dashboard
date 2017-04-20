@@ -17,15 +17,15 @@
         <script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
         <title>Legendary Spatial API Dashboard</title>
         <style>
-		@font-face {
-			font-family: 'Droid Serif';
-			src: url(font/DroidSerif.ttf);
-		}
-		.serif {
-			font-family: 'Droid Serif', serif;
-			color: #000000;
-		}		
-	</style>
+            @font-face {
+                font-family: 'Droid Serif';
+                src: url(font/DroidSerif.ttf);
+            }
+            .serif {
+                font-family: 'Droid Serif', serif;
+                color: #000000;
+            }		
+        </style>
     </head>
     <body >
         <h2>Legendary Spatial API Dashboard</h2>
@@ -38,39 +38,127 @@
             <li>The place where users stay for the longest time: Hunt Library</li>           
         </ul>
         <div class="row">
-            <div class="col-sm-4">
-                <div id="container1" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+            <div class="col-sm-6">
+                <div id="container1"></div>
             </div>
-            <div id="container2"  class="col-sm-4"></div>
-            <div id="container3"  class="col-sm-4"></div>
+            <div class="col-sm-6">
+                <div id="container2"></div>
+            </div>
         </div>
-        <h2>Location-Specific Data</h2>
-        <%= request.getAttribute("locations")%>
-        <h2>Log Dump</h2>
-        <%= request.getAttribute("dump")%>
-        <script>
-            $(function () {
-                var chart1 = Highcharts.chart({
-                    chart: {
-                        renderTo: 'container1',
-                        type: 'bar'
-                    },
+        <div class="col-sm-6">
+            <div id="container3"></div>
+        </div><div class="col-sm-6">
+            <div id="container4"></div>
+        </div>
+    </div>
+    <h2>Location-Specific Data</h2>
+    <%= request.getAttribute("locations")%>
+    <h2>Log Dump</h2>
+    <%= request.getAttribute("dump")%>
+    <script>
+        $(function () {
+            Highcharts.chart({
+                chart: {
+                    renderTo: 'container1',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Spatial API Location Visits'
+                },
+                xAxis: {
+                    categories: <%= request.getAttribute("location-names")%>
+                },
+                yAxis: {
+                    min: 0,
                     title: {
-                        text: 'Spatial API Location Visits'
-                    },
-                    xAxis: {
-                        categories: <%= request.getAttribute("location-names")%>
-                    },
-                    yAxis: {
-                        min: 0,
-                        title: {
-                            text: ''
-                        }
-                    },
-                    series: [{name: "visits", data: <%= request.getAttribute("location-visits")%>}]
-                });
+                        text: ''
+                    }
+                },
+                series: [{name: "visits", data: <%= request.getAttribute("location-visits")%>}]
             });
-        </script>
-    </body>
+            Highcharts.chart('container2', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Nerdy or Jock?'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f}) %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                        name: 'Percetage',
+                        colorByPoint: true,
+                        data: [{
+                                name: 'Nerdy',
+                                y: 12,
+                                sliced: true,
+                                selected: true
+                            }, {
+                                name: 'Jock',
+                                y: 7
+                            }, {
+                                name: 'Balanced',
+                                y: 26
+                            }]
+                    }]
+            });
+            Highcharts.chart({
+                chart: {
+                    renderTo: 'container3',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Average time staying at each location'
+                },
+                xAxis: {
+                    categories: <%= request.getAttribute("location-names")%>
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    }
+                },
+                series: [{name: "minutes", data: <%= request.getAttribute("time-to-stay")%>}]
+            });
+            Highcharts.chart({
+                chart: {
+                    renderTo: 'container4',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Average time to arrive at each location'
+                },
+                xAxis: {
+                    categories: <%= request.getAttribute("location-names")%>
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    }
+                },
+                series: [{name: "minutes", data: <%= request.getAttribute("time-to-travel")%>}]
+            });
+        });
+    </script>
+</body>
 </html>
 

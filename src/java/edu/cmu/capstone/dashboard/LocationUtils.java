@@ -5,6 +5,7 @@
  */
 package edu.cmu.capstone.dashboard;
 
+import java.util.Random;
 import org.json.JSONArray;
 
 /**
@@ -24,19 +25,28 @@ public class LocationUtils {
         }
         return sum;
     }
-    
-    public static String getLocationNames(final Location[] locations){
+
+    public static String getLocationNames(final Location[] locations) {
         JSONArray result = new JSONArray();
         for (Location location : locations) {
             result.put(location.getName());
         }
         return result.toString();
     }
-    
-    public static String getLocationVisits(final Location[] locations){
+
+    public static String getLocationVisits(final Location[] locations) {
         JSONArray result = new JSONArray();
         for (Location location : locations) {
             result.put(location.getCount());
+        }
+        return result.toString();
+    }
+
+    public static String getLocationRandom(final Location[] locations) {
+        JSONArray result = new JSONArray();
+        Random random = new Random();
+        for (Location location : locations) {
+            result.put(location.getCount() * random.nextFloat() * random.nextInt(10));
         }
         return result.toString();
     }
