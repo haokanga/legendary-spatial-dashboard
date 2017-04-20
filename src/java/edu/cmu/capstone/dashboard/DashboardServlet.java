@@ -33,7 +33,7 @@ public class DashboardServlet extends HttpServlet {
         // Aggregation Analytics
         Location[] locations = SpatialGetMarkers.getLocations();
         request.setAttribute("sum-visits",
-                LocationUtils.getVisits(locations)
+                LocationUtils.getSumVisits(locations)
         );
         request.setAttribute("avg-visits",
                 LocationUtils.getAvgVisits(locations)
@@ -41,6 +41,13 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("mostly-visited-place",
                 LocationUtils.getMostPopularLocation(locations)
         );
+        // charts
+        request.setAttribute("location-names",
+               LocationUtils.getLocationNames(locations)
+        );
+        request.setAttribute("location-visits",
+               LocationUtils.getLocationVisits(locations)
+        );        
         // Location-Specific Data
         request.setAttribute("locations",
                 HTMLUtils.toHtml(locations));

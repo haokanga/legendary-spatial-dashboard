@@ -5,6 +5,8 @@
  */
 package edu.cmu.capstone.dashboard;
 
+import org.json.JSONArray;
+
 /**
  * Location Analytic.
  *
@@ -12,7 +14,7 @@ package edu.cmu.capstone.dashboard;
  */
 public class LocationUtils {
 
-    public static int getVisits(final Location[] locations) {
+    public static int getSumVisits(final Location[] locations) {
         if (locations == null) {
             return 0;
         }
@@ -22,13 +24,29 @@ public class LocationUtils {
         }
         return sum;
     }
+    
+    public static String getLocationNames(final Location[] locations){
+        JSONArray result = new JSONArray();
+        for (Location location : locations) {
+            result.put(location.getName());
+        }
+        return result.toString();
+    }
+    
+    public static String getLocationVisits(final Location[] locations){
+        JSONArray result = new JSONArray();
+        for (Location location : locations) {
+            result.put(location.getCount());
+        }
+        return result.toString();
+    }
 
     public static String getAvgVisits(final Location[] locations) {
         if (locations == null || locations.length == 0) {
             return "0";
         }
         return String.format("%.1f",
-                (float) getVisits(locations) / locations.length);
+                (float) getSumVisits(locations) / locations.length);
     }
 
     public static String getMostPopularLocation(final Location[] locations) {
