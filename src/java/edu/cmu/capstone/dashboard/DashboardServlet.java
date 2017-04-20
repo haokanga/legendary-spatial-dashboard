@@ -6,8 +6,6 @@
 package edu.cmu.capstone.dashboard;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import static java.util.Collections.singletonList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,8 +30,22 @@ public class DashboardServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("dump", SpatialGetMarkers.getResponse());
-        // Transfer control over the the correct "view"
+        // Aggregation Analytics
+        Location[] locations = SpatialGetMarkers.getLocations();
+        request.setAttribute("sum-visits",
+                LocationUtils.getVisits(locations)
+        );
+        request.setAttribute("avg-visits",
+                LocationUtils.getAvgVisits(locations)
+        );
+        request.setAttribute("mostly-visited-place",
+                LocationUtils.getMostPopularLocation(locations)
+        );
+        // Location-Specific Data
+        request.setAttribute("locations",
+                HTMLUtils.toHtml(locations));
+        request.setAttribute("dump",
+                HTMLUtils.toHtml(SpatialGetMarkers.getResponse()));
         RequestDispatcher view = request.getRequestDispatcher("dashboard.jsp");
         view.forward(request, response);
     }
