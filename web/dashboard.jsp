@@ -37,17 +37,15 @@
             <li>Estimated time to visit across all locations: <%= request.getAttribute("time-to-finish")%> minutes</li>
         </ul>
         <div class="row">
-            <div class="col-sm-6">
-                <div id="container1"></div>
+            <div class="col-sm-4">                
+                <div id="container1"></div>  
+            </div>        
+            <div class="col-sm-4">             
+                <div id="container2">                </div>    
+            </div>    
+            <div class="col-sm-4">
+                <div id="container3"></div>
             </div>
-            <div class="col-sm-6">
-                <div id="container2"></div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div id="container3"></div>
-        </div><div class="col-sm-6">
-            <div id="container4"></div>
         </div>
     </div>
     <h2>Location-Specific Data</h2>
@@ -121,25 +119,6 @@
             Highcharts.chart({
                 chart: {
                     renderTo: 'container3',
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Average time staying at each location'
-                },
-                xAxis: {
-                    categories: <%= request.getAttribute("location-names")%>
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: ''
-                    }
-                },
-                series: [{name: "minutes", data: <%= request.getAttribute("time-to-stay")%>}]
-            });
-            Highcharts.chart({
-                chart: {
-                    renderTo: 'container4',
                     type: 'bar'
                 },
                 title: {
