@@ -27,15 +27,14 @@
             }		
         </style>
     </head>
-    <body >
+    <body class="serif">
         <h2>Legendary Spatial API Dashboard</h2>
         <h2>Aggregation Analytics</h2>
         <ul>
             <li>Total visits to all the places: <%= request.getAttribute("sum-visits")%></li>
             <li>Average visits to the places: <%= request.getAttribute("avg-visits")%></li>
             <li>Mostly visited place: <%= request.getAttribute("mostly-visited-place")%></li>
-            <li>Estimated time to visit across all locations: 2 hours 26 minutes</li>
-            <li>The place where users stay for the longest time: Hunt Library</li>           
+            <li>Estimated time to visit across all locations: <%= request.getAttribute("time-to-finish")%> minutes</li>
         </ul>
         <div class="row">
             <div class="col-sm-6">
@@ -63,7 +62,7 @@
                     type: 'bar'
                 },
                 title: {
-                    text: 'Spatial API Location Visits'
+                    text: 'Visits to each location'
                 },
                 xAxis: {
                     categories: <%= request.getAttribute("location-names")%>
@@ -144,10 +143,10 @@
                     type: 'bar'
                 },
                 title: {
-                    text: 'Average time to arrive at each location'
+                    text: 'Average travel time between locations'
                 },
                 xAxis: {
-                    categories: <%= request.getAttribute("location-names")%>
+                    categories: <%= request.getAttribute("locations-to-travel")%>
                 },
                 yAxis: {
                     min: 0,

@@ -48,12 +48,16 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("location-visits",
                 LocationUtils.getLocationVisits(locations)
         );
-        request.setAttribute("time-to-stay",
-                LocationUtils.getLocationRandom(locations)
+        request.setAttribute("time-to-finish", 
+                String.format("%.1f", 
+                        LocationUtils.getAvgTimeToFinishTour(locations))
+                
+        );        
+        request.setAttribute("locations-to-travel",
+                LocationUtils.getLocationsToTravel(locations)
         );
-
         request.setAttribute("time-to-travel",
-                LocationUtils.getLocationRandom(locations)
+                LocationUtils.getAvgTimeToTravel(locations)
         );
         // Location-Specific Data
         request.setAttribute("locations",
