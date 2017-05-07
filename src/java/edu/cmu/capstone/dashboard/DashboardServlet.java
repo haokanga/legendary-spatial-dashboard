@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "DashboardServlet", urlPatterns = {"/"})
 public class DashboardServlet extends HttpServlet {
 
+    private final static boolean LOG_DUMP = false;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
@@ -80,8 +82,9 @@ public class DashboardServlet extends HttpServlet {
         // Location-Specific Data
         request.setAttribute("locations",
                 HTMLUtils.toHtml(locations));
-        request.setAttribute("dump",
-                HTMLUtils.toHtml(SpatialGetMarkers.getResponse()));
+        request.setAttribute("dump", 
+                LOG_DUMP ? HTMLUtils.toHtml(SpatialGetMarkers.getResponse()) : "Log dump is disabled to make loading faster; you can turn on log dumping by setting LOG_DUMP as true"
+                );
         RequestDispatcher view = request.getRequestDispatcher("dashboard.jsp");
         view.forward(request, response);
     }

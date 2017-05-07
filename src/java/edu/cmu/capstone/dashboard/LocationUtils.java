@@ -8,6 +8,7 @@ package edu.cmu.capstone.dashboard;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +27,7 @@ import org.json.JSONException;
  * @author Marshall An <marshall.an at cloudcomputing.scs.cmu.edu>
  */
 public class LocationUtils {
-
+    
     public static int getSumVisits(final Location[] locations) {
         if (locations == null) {
             return 0;
@@ -37,15 +38,15 @@ public class LocationUtils {
         }
         return sum;
     }
-
+    
     public static int getStartVisits(final Location[] locations) {
         return locations[0].getCount();
     }
-
+    
     public static int getDstVisits(final Location[] locations) {
         return locations[locations.length - 1].getCount();
     }
-
+    
     public static String getLocationNames(final Location[] locations) {
         JSONArray result = new JSONArray();
         for (Location location : locations) {
@@ -53,7 +54,7 @@ public class LocationUtils {
         }
         return result.toString();
     }
-
+    
     public static String getLocationsToTravel(final Location[] locations) {
         JSONArray result = new JSONArray();
         for (int i = 1; i < locations.length; i++) {
@@ -61,7 +62,7 @@ public class LocationUtils {
         }
         return result.toString();
     }
-
+    
     public static String getLocationVisits(final Location[] locations) {
         JSONArray result = new JSONArray();
         for (Location location : locations) {
@@ -69,9 +70,9 @@ public class LocationUtils {
         }
         return result.toString();
     }
-
+    
     public static String getAvgTimeToTravel(final Location[] locations) {
-        JSONArray result = new JSONArray();
+        ArrayList<String> result = new ArrayList();
         for (int loc = 1; loc < locations.length; loc++) {
             JSONArray prevTimestamps = locations[loc - 1].getTimestamps();
             JSONArray nextTimestamps = locations[loc].getTimestamps();
@@ -88,11 +89,13 @@ public class LocationUtils {
                 }
             }
             // avg diffInMin = diffInSec / len * 60
-            result.put((double) sum / (nextTimestamps.length() * 60));
+            result.add(
+                    String.format("%.2f", (double) sum / (nextTimestamps.length() * 60))
+            );
         }
-        return result.toString();
+        return Arrays.toString(result.toArray());
     }
-
+    
     public static String getHours() {
         JSONArray result = new JSONArray();
         for (int hr = 0; hr <= 23; hr++) {
@@ -115,7 +118,7 @@ public class LocationUtils {
                         new String[]{"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"}))
                 .toString();
     }
-
+    
     private static String hourToString(int i) {
         if (i <= 12) {
             return i + "am";
@@ -123,7 +126,7 @@ public class LocationUtils {
             return (i - 12) + "pm";
         }
     }
-
+    
     public static String getVisitsPerHour(final Location[] locations) {
         long[] hours = new long[24];
         for (Location location : locations) {
@@ -145,7 +148,7 @@ public class LocationUtils {
         }
         return Arrays.toString(hours);
     }
-
+    
     public static String getVisitsPerDay(final Location[] locations) {
         long[] days = new long[7];
         for (Location location : locations) {
@@ -167,7 +170,7 @@ public class LocationUtils {
         }
         return Arrays.toString(days);
     }
-
+    
     public static double getAvgTimeToFinishTour(final Location[] locations) {
         JSONArray startTimestamps = locations[0].getTimestamps();
         JSONArray finishTimestamps = locations[locations.length - 1].getTimestamps();
@@ -185,9 +188,9 @@ public class LocationUtils {
         }
         // avg diffInMin = diffInSec / len * 60
         return (double) sum / (finishTimestamps.length() * 60);
-
+        
     }
-
+    
     public static String getLocationRandom(final Location[] locations) {
         JSONArray result = new JSONArray();
         Random random = new Random();
@@ -196,7 +199,7 @@ public class LocationUtils {
         }
         return result.toString();
     }
-
+    
     public static String getAvgVisits(final Location[] locations) {
         if (locations == null || locations.length == 0) {
             return "0";
@@ -204,7 +207,7 @@ public class LocationUtils {
         return String.format("%.1f",
                 (float) getSumVisits(locations) / locations.length);
     }
-
+    
     public static String getMostPopularLocation(final Location[] locations) {
         if (locations == null || locations.length == 0) {
             return "";

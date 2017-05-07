@@ -43,7 +43,7 @@
                 <div id="container1"></div>  
             </div>        
             <div class="col-sm-6">             
-                <div id="container2">                </div>    
+                <div id="container2"></div>  
             </div>
         </div>
         <div class="row">
@@ -51,15 +51,18 @@
                 <div id="container3"></div>  
             </div>        
             <div class="col-sm-6">             
-                <div id="container4">                </div>    
+                <div id="container4"></div>  
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6">                
+            <div class="col-sm-4">                
                 <div id="container5"></div>  
             </div>        
-            <div class="col-sm-6">             
-                <div id="container6">                </div>    
+            <div class="col-sm-4">             
+                <div id="container6"></div>    
+            </div>
+            <div class="col-sm-4">             
+                <div id="container7"></div>    
             </div>
         </div>
     </div>
@@ -146,7 +149,6 @@
                 },
                 series: [{name: "visits", data: <%= request.getAttribute("visits-per-day")%>}]
             });
-
             Highcharts.chart('container5', {
                 chart: {
                     plotBackgroundColor: null,
@@ -178,19 +180,107 @@
                         colorByPoint: true,
                         data: [{
                                 name: 'Nerdy',
-                                y: 12,
+                                y: 542,
                                 sliced: true,
                                 selected: true
                             }, {
                                 name: 'Jock',
-                                y: 7
+                                y: 177
                             }, {
                                 name: 'Balanced',
+                                y: 193
+                            }]
+                    }]
+            });
+            Highcharts.chart('container6', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Classification: Female or Male?'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f}) %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                        name: 'Percetage',
+                        colorByPoint: true,
+                        data: [{
+                                name: 'Female',
+                                y: 445,
+                                sliced: true,
+                                selected: true
+                            }, {
+                                name: 'Male',
+                                y: 441
+                            }, {
+                                name: 'Undisclosed',
                                 y: 26
                             }]
                     }]
             });
-
+            Highcharts.chart('container7', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Classification: User Type'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f}) %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                        name: 'Percetage',
+                        colorByPoint: true,
+                        data: [{
+                                name: 'Admitted',
+                                y: 353,
+                                sliced: true,
+                                selected: true
+                            }, {
+                                name: 'Prospective',
+                                y: 46
+                            }, {
+                                name: 'Current',
+                                y: 401
+                            }, {
+                                name: 'Faculty',
+                                y: 112
+                            }]
+                    }]
+            });
         });
     </script>
 </body>
