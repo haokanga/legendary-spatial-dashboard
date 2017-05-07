@@ -32,6 +32,14 @@ public class LocationUtils {
         return sum;
     }
 
+    public static int getStartVisits(final Location[] locations){
+        return locations[0].getCount();
+    }
+    
+    public static int getDstVisits(final Location[] locations){
+        return locations[locations.length - 1].getCount();
+    }
+    
     public static String getLocationNames(final Location[] locations) {
         JSONArray result = new JSONArray();
         for (Location location : locations) {

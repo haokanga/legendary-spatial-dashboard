@@ -33,6 +33,8 @@
         <ul>
             <li>Total visits to all the places: <%= request.getAttribute("sum-visits")%></li>
             <li>Average visits to the places: <%= request.getAttribute("avg-visits")%></li>
+            <li>Number/Percentage of users who successfully finished the tour: <%= request.getAttribute("dst-visits")%>
+                (<%= request.getAttribute("percentage-dst-visits")%>%)</li>
             <li>Mostly visited place: <%= request.getAttribute("mostly-visited-place")%></li>
             <li>Estimated time to finish the tour: <%= request.getAttribute("time-to-finish")%> minutes</li>
         </ul>

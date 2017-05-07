@@ -38,6 +38,13 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("avg-visits",
                 LocationUtils.getAvgVisits(locations)
         );
+        request.setAttribute("dst-visits",
+                LocationUtils.getDstVisits(locations)
+        );
+        request.setAttribute("percentage-dst-visits",
+                (double)LocationUtils.getDstVisits(locations) / 
+                        LocationUtils.getStartVisits(locations)
+        );
         request.setAttribute("mostly-visited-place",
                 LocationUtils.getMostPopularLocation(locations)
         );
