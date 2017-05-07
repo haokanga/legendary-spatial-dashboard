@@ -8,11 +8,17 @@ package edu.cmu.capstone.dashboard;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 /**
  * Location Analytic.
@@ -32,14 +38,14 @@ public class LocationUtils {
         return sum;
     }
 
-    public static int getStartVisits(final Location[] locations){
+    public static int getStartVisits(final Location[] locations) {
         return locations[0].getCount();
     }
-    
-    public static int getDstVisits(final Location[] locations){
+
+    public static int getDstVisits(final Location[] locations) {
         return locations[locations.length - 1].getCount();
     }
-    
+
     public static String getLocationNames(final Location[] locations) {
         JSONArray result = new JSONArray();
         for (Location location : locations) {
@@ -47,10 +53,10 @@ public class LocationUtils {
         }
         return result.toString();
     }
-    
+
     public static String getLocationsToTravel(final Location[] locations) {
         JSONArray result = new JSONArray();
-        for (int i = 1; i < locations.length; i ++) {
+        for (int i = 1; i < locations.length; i++) {
             result.put("To " + locations[i].getName());
         }
         return result.toString();
@@ -77,7 +83,7 @@ public class LocationUtils {
                     long prev = format.parse((String) prevTimestamps.get(j)).getTime();
                     long diffInSec = (next - prev) / 1000;
                     sum += diffInSec;
-                } catch (ParseException ex) {
+                } catch (ParseException | JSONException ex) {
                     Logger.getLogger(LocationUtils.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -85,6 +91,81 @@ public class LocationUtils {
             result.put((double) sum / (nextTimestamps.length() * 60));
         }
         return result.toString();
+    }
+
+    public static String getHours() {
+        JSONArray result = new JSONArray();
+        for (int hr = 0; hr <= 23; hr++) {
+            result.put(
+                    String.format("%s-%s",
+                            hourToString(hr), hourToString(hr + 1))
+            );
+        }
+        return result.toString();
+    }
+
+    /**
+     * SUN, MON, TUE, WED, THU, FRI, SAT
+     *
+     * @return
+     */
+    public static String getDays() {
+        return new JSONArray(
+                Arrays.asList(
+                        new String[]{"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"}))
+                .toString();
+    }
+
+    private static String hourToString(int i) {
+        if (i <= 12) {
+            return i + "am";
+        } else {
+            return (i - 12) + "pm";
+        }
+    }
+
+    public static String getVisitsPerHour(final Location[] locations) {
+        long[] hours = new long[24];
+        for (Location location : locations) {
+            JSONArray timestamps = location.getTimestamps();
+            DateFormat format = new SimpleDateFormat("E, MMMMM DD, yyyy hh:mm:ss a", Locale.ENGLISH);
+            Calendar calendar = GregorianCalendar.getInstance();
+            for (int j = 0; j < timestamps.length(); j++) {
+                try {
+                    Date date = format.parse((String) timestamps.get(j));
+                    calendar.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+                    calendar.setTime(date);
+                    System.out.println(format.format(date));
+                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                    hours[hour]++;
+                } catch (ParseException | JSONException ex) {
+                    Logger.getLogger(LocationUtils.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return Arrays.toString(hours);
+    }
+
+    public static String getVisitsPerDay(final Location[] locations) {
+        long[] days = new long[7];
+        for (Location location : locations) {
+            JSONArray timestamps = location.getTimestamps();
+            DateFormat format = new SimpleDateFormat("E, MMMMM DD, yyyy hh:mm:ss a", Locale.ENGLISH);
+            Calendar calendar = GregorianCalendar.getInstance();
+            for (int j = 0; j < timestamps.length(); j++) {
+                try {
+                    Date date = format.parse((String) timestamps.get(j));
+                    calendar.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+                    calendar.setTime(date);
+                    System.out.println(format.format(date));
+                    int day = calendar.get(Calendar.DAY_OF_WEEK);
+                    days[day - 1]++;
+                } catch (ParseException | JSONException ex) {
+                    Logger.getLogger(LocationUtils.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return Arrays.toString(days);
     }
 
     public static double getAvgTimeToFinishTour(final Location[] locations) {
@@ -98,7 +179,7 @@ public class LocationUtils {
                 long start = format.parse((String) startTimestamps.get(j)).getTime();
                 long diffInSec = (finish - start) / 1000;
                 sum += diffInSec;
-            } catch (ParseException ex) {
+            } catch (ParseException | JSONException ex) {
                 Logger.getLogger(LocationUtils.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

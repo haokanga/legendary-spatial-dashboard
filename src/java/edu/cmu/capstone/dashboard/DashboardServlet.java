@@ -42,8 +42,8 @@ public class DashboardServlet extends HttpServlet {
                 LocationUtils.getDstVisits(locations)
         );
         request.setAttribute("percentage-dst-visits",
-                (double)LocationUtils.getDstVisits(locations) / 
-                        LocationUtils.getStartVisits(locations)
+                (double) LocationUtils.getDstVisits(locations)
+                / LocationUtils.getStartVisits(locations)
         );
         request.setAttribute("mostly-visited-place",
                 LocationUtils.getMostPopularLocation(locations)
@@ -55,16 +55,27 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("location-visits",
                 LocationUtils.getLocationVisits(locations)
         );
-        request.setAttribute("time-to-finish", 
-                String.format("%.1f", 
+        request.setAttribute("time-to-finish",
+                String.format("%.1f",
                         LocationUtils.getAvgTimeToFinishTour(locations))
-                
-        );        
+        );
         request.setAttribute("locations-to-travel",
                 LocationUtils.getLocationsToTravel(locations)
         );
         request.setAttribute("time-to-travel",
                 LocationUtils.getAvgTimeToTravel(locations)
+        );
+        request.setAttribute("hours",
+                LocationUtils.getHours()
+        );
+        request.setAttribute("visits-per-hour",
+                LocationUtils.getVisitsPerHour(locations)
+        );
+        request.setAttribute("days",
+                LocationUtils.getDays()
+        );
+        request.setAttribute("visits-per-day",
+                LocationUtils.getVisitsPerDay(locations)
         );
         // Location-Specific Data
         request.setAttribute("locations",

@@ -39,14 +39,27 @@
             <li>Estimated time to finish the tour: <%= request.getAttribute("time-to-finish")%> minutes</li>
         </ul>
         <div class="row">
-            <div class="col-sm-4">                
+            <div class="col-sm-6">                
                 <div id="container1"></div>  
             </div>        
-            <div class="col-sm-4">             
+            <div class="col-sm-6">             
                 <div id="container2">                </div>    
-            </div>    
-            <div class="col-sm-4">
-                <div id="container3"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">                
+                <div id="container3"></div>  
+            </div>        
+            <div class="col-sm-6">             
+                <div id="container4">                </div>    
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">                
+                <div id="container5"></div>  
+            </div>        
+            <div class="col-sm-6">             
+                <div id="container6">                </div>    
             </div>
         </div>
     </div>
@@ -62,7 +75,7 @@
                     type: 'bar'
                 },
                 title: {
-                    text: 'Visits to each location'
+                    text: 'Aggregation: visits to each location'
                 },
                 xAxis: {
                     categories: <%= request.getAttribute("location-names")%>
@@ -75,7 +88,66 @@
                 },
                 series: [{name: "visits", data: <%= request.getAttribute("location-visits")%>}]
             });
-            Highcharts.chart('container2', {
+
+            Highcharts.chart({
+                chart: {
+                    renderTo: 'container2',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Aggregation: Average travel time between locations'
+                },
+                xAxis: {
+                    categories: <%= request.getAttribute("locations-to-travel")%>
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    }
+                },
+                series: [{name: "minutes", data: <%= request.getAttribute("time-to-travel")%>}]
+            });
+            Highcharts.chart({
+                chart: {
+                    renderTo: 'container3',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'User Activity Pattern: Check-ins Per Hour'
+                },
+                xAxis: {
+                    categories: <%= request.getAttribute("hours")%>
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    }
+                },
+                series: [{name: "visits", data: <%= request.getAttribute("visits-per-hour")%>}]
+            });
+            Highcharts.chart({
+                chart: {
+                    renderTo: 'container4',
+                    type: 'bar'
+                },
+                title: {
+                    text: 'User Activity Pattern: Check-ins on Each Day of the Week'
+                },
+                xAxis: {
+                    categories: <%= request.getAttribute("days")%>
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    }
+                },
+                series: [{name: "visits", data: <%= request.getAttribute("visits-per-day")%>}]
+            });
+
+            Highcharts.chart('container5', {
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
@@ -83,7 +155,7 @@
                     type: 'pie'
                 },
                 title: {
-                    text: 'Nerdy or Jock?'
+                    text: 'Classification: Nerdy or Jock?'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -118,25 +190,7 @@
                             }]
                     }]
             });
-            Highcharts.chart({
-                chart: {
-                    renderTo: 'container3',
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Average travel time between locations'
-                },
-                xAxis: {
-                    categories: <%= request.getAttribute("locations-to-travel")%>
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: ''
-                    }
-                },
-                series: [{name: "minutes", data: <%= request.getAttribute("time-to-travel")%>}]
-            });
+
         });
     </script>
 </body>
